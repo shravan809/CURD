@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>CURD</title>
+    <style>
+        .info{color:orange}
+        .success{color:green}
+    </style>
+</head>
+
+<body>
+<center>
+<div class="container mt-5">
+    <h2 class="text-centre alert alert-success" style="color:red">Library Management System</h2>
+</div>
+
+<div class="col">
+    <div class="col-sm-3">
+     <h4 class="text-center alert alert-info" style="background-color:#CCE31C; color:blue">Issue Book</h4>
+      <form action="" method="POST" novalidate>
+          <table>
+        {% csrf_token %}
+        {{form2.as_table}}
+              </table>
+        <input type="submit" class="btn btn-success" value="Add">
+
+      </form>
+        {% if messages %}
+  {% for message in messages %}<br>
+   <span {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</span>
+  {% endfor %}
+ {% endif %}
+    </div>
+    <div class="col-sm-7 offset-1">
+        <h4 class="text-center alert alert-info" > Issued book information</h4>
+    {% if stu %}
+        <table class="table table-striped" style="color:blue">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">student</th>
+              <th scope="col">book_title</th>
+              <th scope="col">book_author</th>
+              <th scope="col">issue_date</th>
+              <th scope="col">Action</th>
+
+            </tr>
+          </thead>
+          <tbody>
+          {% for st in stu %}
+            <tr>
+              <th scope="row">{{st.id}}</th>
+              <td>{{st.student}}</td>
+              <td>{{st.book_title}}</td>
+              <td>{{st.book_author}}</td>
+              <td>{{st.issue_date}}</td>
+              <td>
+                  <a href="{% url 'updatedata' st.id %}" class="btn btn-primary">Edit</a>
+                  <form action="{% url 'deletedata' st.id%}" method="POST" class="d-inline">
+                      {% csrf_token %}
+                      <input type="submit" class="btn btn-danger" value="Delete">
+                  </form>
+
+
+              </td>
+            </tr>
+
+          {% endfor %}
+          </tbody>
+        </table>
+
+    {% else %}
+        <h4 class="text-center alert alert-warning">"No Data</h4>
+    {% endif %}
+    </div>
+
+</div>
+
+<script src="{% static 'app/js/jquery.js' %}"></script>
+<script src="{% static 'app/js/popper.js' %}"></script>
+<script src="{% static 'app/js/bootstrap.js' %}"></script>
+{% endblock content %}
+</center>
+</body>
+</html>
